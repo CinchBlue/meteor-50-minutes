@@ -7,13 +7,23 @@ if (Meteor.isClient) {
         }
     });
 
-    //Template.tasks.events({
-    //    "submit .add-task": function(event) {
-    //        var name = event.target.name.value;
-    //        console.log(name);
-    //        return false;
-    //    }
-    //})
+    Template.tasks.events({
+        "submit .add-task": function(event) {
+            let name = event.target.name.value;
+            Tasks.insert({
+                name: name, createdAt: new Date()
+            });
+            event.target.name.value = '';
+            return false;
+        },
+
+        "click .delete-task": function(event) {
+            if (confirm('Delete Task?')) {
+                Tasks.remove(this._id);
+            }
+            return false;
+        }
+    })
 }
 
 if (Meteor.isServer) {
